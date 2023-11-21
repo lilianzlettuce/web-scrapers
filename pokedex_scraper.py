@@ -36,17 +36,23 @@ def scrape(url, type) :
                 #print(row.get_text())
                 total = row.find(class_='cell-total').get_text()
                 types = row.find(class_='cell-icon').get_text()
-                if type in types:
-                    allTotals.append(int(total))
 
-                    #print('total: ' + total)
-                    #print('types: ' + types)
+                # if cell has muted text, skip over
+                try :
+                    muted = row.find(class_='text-muted').get_text()
+                except :
+                    if type in types:
+                        allTotals.append(int(total))
+                        #print('total: ' + total)
+                        #print('types: ' + types)
             except :
-                print('nothing')
+                print('error')
 
         print('Number: ' + str(len(allTotals)))
         print('Mean: ' + str(statistics.mean(allTotals)))
         print('Median: ' + str(statistics.median(allTotals)))
+        print('Min: ' + str(min(allTotals)))
+        print('Max: ' + str(max(allTotals)))
         print('\n')
 
         return allTotals
